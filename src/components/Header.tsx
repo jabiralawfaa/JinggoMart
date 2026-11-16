@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/session";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
+import CartButton from "./CartButton";
 import type { Role } from "@/types";
 
 const ROLE_LABEL: Record<Role, string> = {
@@ -28,6 +29,7 @@ export default async function Header() {
 
         <div className="header-right">
           <ThemeToggle />
+          <CartButton />
 
           {user ? (
             <div className="nav-auth">

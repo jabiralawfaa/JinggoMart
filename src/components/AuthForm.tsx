@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { resetUserCache } from "@/lib/useUser";
 
 type Errors = Record<string, string>;
 
@@ -68,6 +69,7 @@ export default function AuthForm({ mode }: { mode: "login" | "register" }) {
     }
 
     const dest = data.user.role === "BUYER" ? "/" : "/dashboard";
+    resetUserCache();
     router.push(dest);
     router.refresh();
   }

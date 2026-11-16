@@ -3,6 +3,7 @@ import "./globals.css";
 import SvgDefs from "@/components/SvgDefs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { CartProvider } from "@/components/CartProvider";
 
 export const metadata: Metadata = {
   title: "JinggoMart — Katalog Produk UMKM Banyuwangi",
@@ -23,9 +24,11 @@ export default function RootLayout({
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <SvgDefs />
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

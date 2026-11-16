@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { WA_DISPLAY, WA_NUMBER } from "@/lib/constants";
 import Logo from "./Logo";
+import BuyerGateLink from "./BuyerGateLink";
 
 export default function Footer() {
   return (
@@ -39,14 +40,14 @@ export default function Footer() {
           </div>
           <div>
             <h4>Hubungi</h4>
-            <a
+            <BuyerGateLink
               className="flink"
               href={`https://wa.me/${WA_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
             >
               WhatsApp toko
-            </a>
+            </BuyerGateLink>
             <span className="flink">Banyuwangi, Jawa Timur</span>
           </div>
         </div>
@@ -56,13 +57,13 @@ export default function Footer() {
           <p>Tanya stok atau pesan langsung ke pemilik toko lewat WhatsApp.</p>
           <div className="foot-row">
             <span>{WA_DISPLAY}</span>
-            <a
+            <BuyerGateLink
               href={`https://wa.me/${WA_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
             >
               Chat WhatsApp
-            </a>
+            </BuyerGateLink>
           </div>
         </div>
       </div>
