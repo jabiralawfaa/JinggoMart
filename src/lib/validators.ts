@@ -81,8 +81,12 @@ export type RegisterInput = {
   email: string;
   nama: string;
   password: string;
+  confirmPassword: string;
   role: "SELLER" | "BUYER";
 };
+
+// Regex ketat: tolak karakter metacharacter (anti-injection) — query sudah parameterized via Prisma.
+const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 export function validateRegister(
   body: Record<string, unknown>
@@ -91,10 +95,11 @@ export function validateRegister(
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   const nama = typeof body.nama === "string" ? body.nama.trim() : "";
   const password = typeof body.password === "string" ? body.password : "";
+  const confirmPassword = typeof body.confirmPassword === "string" ? body.confirmPassword : "";
   const role = body.role === "SELLER" ? "SELLER" : "BUYER";
 
   if (!email) errors.email = "Email wajib diisi.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+  else if (!EMAIL_REGEX.test(email))
     errors.email = "Format email tidak valid.";
 
   if (!nama) errors.nama = "Nama wajib diisi.";
@@ -102,8 +107,10 @@ export function validateRegister(
 
   if (password.length < 6) errors.password = "Password minimal 6 karakter.";
 
+  if (password !== confirmPassword) errors.confirmPassword = "Konfirmasi password tidak cocok.";
+
   if (Object.keys(errors).length > 0) return { errors };
-  return { data: { email, nama, password, role } };
+  return { data: { email, nama, password, confirmPassword, role } };
 }
 
 export function validateLogin(
@@ -114,6 +121,7 @@ export function validateLogin(
   const password = typeof body.password === "string" ? body.password : "";
 
   if (!email) errors.email = "Email wajib diisi.";
+  else if (!EMAIL_REGEX.test(email)) errors.email = "Format email tidak valid.";
   if (!password) errors.password = "Password wajib diisi.";
 
   if (Object.keys(errors).length > 0) return { errors };
