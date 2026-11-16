@@ -1,4 +1,4 @@
-// JinggoMart — Prisma schema (SQLite)
+// JinggoMart — Prisma schema (PostgreSQL)
 // Dokumen data: https://www.prisma.io/docs
 
 generator client {
@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
