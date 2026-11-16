@@ -1,0 +1,57 @@
+// JinggoMart — Prisma schema (SQLite)
+// Dokumen data: https://www.prisma.io/docs
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Peran pengguna di JinggoMart.
+enum Role {
+  ADMIN
+  SELLER
+  BUYER
+}
+
+/// Kategori produk (dibatasi tiga nilai).
+enum Kategori {
+  Makanan
+  Minuman
+  Kerajinan
+}
+
+/// Akun pengguna: admin, seller, atau pembeli.
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  nama      String
+  password  String // hash bcrypt, TIDAK disimpan plaintext
+  role      Role      @default(BUYER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  products Product[]
+}
+
+/// Produk UMKM yang dijual oleh seorang seller.
+model Product {
+  id        String   @id @default(cuid())
+  nama      String
+  kategori  Kategori
+  harga     Int // Rupiah, >= 0
+  stok      Int // bilangan bulat >= 0
+  deskripsi String
+  imageUrl  String   @default("") // URL eksternal ATAU data URI base64; kosong => placeholder
+  unggulan  Boolean  @default(false)
+  sellerId  String
+  seller    User     @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sellerId])
+  @@index([kategori])
+}
